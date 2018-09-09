@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"time"
 	"net/http"
-	"github.com/fronbasal/substitutes-notify/mail"
+	"github.com/substitutes/substitutes-notify/mail"
 )
 
 var (
