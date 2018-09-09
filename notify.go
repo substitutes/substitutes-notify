@@ -101,6 +101,7 @@ func main() {
 				log.Infof("Sent mail to %s (class %s (%s) updated [%s])", u.Name, u.Email, u.Class, class.Meta.Date)
 				// updateMail.Send()
 			}
+			// Check if data is not overflowing
 			classes = append(classes, class)
 		}
 	}

@@ -1,10 +1,9 @@
 package main
 
-import "github.com/substitutes/substitutes/structs"
-
 type Data struct {
-	Substitutes []structs.Substitute `json:"substitutes"`
-	Meta        Class                `json:"meta"`
+	// Optional, also cache all data
+	// Substitutes []structs.Substitute `json:"substitutes"`
+	Meta Class `json:"meta"`
 }
 
 type Class struct {
