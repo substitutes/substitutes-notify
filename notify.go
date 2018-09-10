@@ -1,15 +1,16 @@
 package main
 
 import (
-	"gopkg.in/alecthomas/kingpin.v2"
-	"github.com/spf13/viper"
-	log "github.com/sirupsen/logrus"
-	"net/smtp"
-	"io/ioutil"
 	"encoding/json"
-	"time"
+	"io/ioutil"
 	"net/http"
+	"net/smtp"
+	"time"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 	"github.com/substitutes/substitutes-notify/mail"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
@@ -99,7 +100,9 @@ func main() {
 						log.Fatal("Failed to parse template: ", err)
 					}
 					log.Infof("Sent mail to %s (class %s (%s) updated [%s])", x.Name, x.Email, u.Class, class.Meta.Date)
-					updateMail.Send()
+					if err := updateMail.Send(); err != nil {
+						log.Fatal("Failed to send mail: ", err)
+					}
 				}
 			}
 			// TODO: Memory mgmt -> make sure it doesn't overflow, regular restarting of service?
