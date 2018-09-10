@@ -99,7 +99,7 @@ func main() {
 						log.Fatal("Failed to parse template: ", err)
 					}
 					log.Infof("Sent mail to %s (class %s (%s) updated [%s])", x.Name, x.Email, u.Class, class.Meta.Date)
-					// updateMail.Send()
+					updateMail.Send()
 				}
 			}
 			// TODO: Memory mgmt -> make sure it doesn't overflow, regular restarting of service?
