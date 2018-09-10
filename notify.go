@@ -14,7 +14,6 @@ import (
 
 var (
 	verbose      = kingpin.Flag("verbose", "Enable verbose output").Short('v').Bool()
-	daemon       = kingpin.Flag("daemon", "Run notify as a daemon").Short('d').Default("true").Bool()
 	debugTrigger = kingpin.Flag("debugtrigger", "Always assume diff").Bool()
 )
 
@@ -61,8 +60,8 @@ func main() {
 	}
 
 	var users Users
-	if json.Unmarshal(bytes, &users) != nil {
-		log.Fatal("Failed to marshal users json.")
+	if err := json.Unmarshal(bytes, &users); err != nil {
+		log.Fatal(err)
 	}
 
 	ticker := time.NewTicker(viper.GetDuration("interval"))
@@ -92,16 +91,18 @@ func main() {
 				}
 			}
 			if !same || *debugTrigger {
-				// Push notification to user
-				update := mail.NewUpdate(viper.GetString("api_url")+"/c/"+u.Class, u.Class, u.Name, class.Meta.Date)
-				updateMail := mail.New([]string{u.Email}, update, auth)
-				if updateMail.Parse("mail/templates/update.html") != nil {
-					log.Fatal("Failed to parse template: ", err)
+				for _, x := range u.Users {
+					// Push notification to user
+					update := mail.NewUpdate(viper.GetString("api_url")+"/c/"+u.Class, u.Class, x.Name, class.Meta.Date)
+					updateMail := mail.New([]string{x.Email}, update, auth)
+					if updateMail.Parse("mail/templates/update.html") != nil {
+						log.Fatal("Failed to parse template: ", err)
+					}
+					log.Infof("Sent mail to %s (class %s (%s) updated [%s])", x.Name, x.Email, u.Class, class.Meta.Date)
+					// updateMail.Send()
 				}
-				log.Infof("Sent mail to %s (class %s (%s) updated [%s])", u.Name, u.Email, u.Class, class.Meta.Date)
-				// updateMail.Send()
 			}
-			// Check if data is not overflowing
+			// TODO: Memory mgmt -> make sure it doesn't overflow, regular restarting of service?
 			classes = append(classes, class)
 		}
 	}

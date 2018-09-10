@@ -12,7 +12,9 @@ type Class struct {
 }
 
 type Users []struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
 	Class string `json:"class"`
+	Users []struct {
+		Name  string `json:"name"`
+		Email string `json:"email"`
+	} `json:"users"`
 }

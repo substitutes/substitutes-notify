@@ -1,7 +1,15 @@
 [
   {
-    "name": "",
-    "email": "",
-    "class": "12"
+    "class": "11",
+    "users": [
+      {
+        "name": "",
+        "email": ""
+      },
+      {
+        "name": "",
+        "email": ""
+      }
+    ]
   }
 ]
