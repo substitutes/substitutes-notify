@@ -53,22 +53,11 @@ func main() {
 
 	auth := smtp.PlainAuth("", viper.GetString("smtp_username"), viper.GetString("smtp_password"), viper.GetString("smtp_host"))
 
-	// Read in configuration file
-	bytes, err := ioutil.ReadFile("users.json")
-
-	if err != nil {
-		log.Fatal("Failed to read users file: ", err)
-	}
-
-	var users Users
-	if err := json.Unmarshal(bytes, &users); err != nil {
-		log.Fatal(err)
-	}
-
 	ticker := time.NewTicker(viper.GetDuration("interval"))
 
 	var classes []Data
 	for range ticker.C {
+		users := getReceivers()
 		// TODO: Optimize scraping - maybe cached responses for classes already done in cycle?
 		for _, u := range users {
 			log.Debug("Fetching class " + u.Class)
