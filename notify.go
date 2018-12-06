@@ -75,12 +75,15 @@ func main() {
 				log.Fatal("Failed to marshal response!")
 			}
 			same := false
+			isEmpty := true
 			for _, c := range classes {
 				if c.Meta.Date == class.Meta.Date && c.Meta.Class == class.Meta.Class {
 					same = true
 				}
+				// Check if is empty
+				isEmpty = len(c.Meta.Class) < 1 || len(c.Meta.Date) < 1
 			}
-			if !same || *debugTrigger {
+			if !same && !isEmpty || *debugTrigger {
 				for _, x := range u.Users {
 					// Push notification to user
 					update := mail.NewUpdate(viper.GetString("api_url")+"/c/"+u.Class, u.Class, x.Name, class.Meta.Date)

@@ -1,10 +1,10 @@
 package mail
 
 import (
-	"html/template"
 	"bytes"
 	"fmt"
 	"github.com/spf13/viper"
+	"html/template"
 	"net/smtp"
 )
 
